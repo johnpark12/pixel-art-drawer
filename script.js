@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     refreshCanvas();
 });
 
-function refreshCanvas() {
+function refreshCanvas(gridSize) {
     const canvas = document.getElementById('canvas');
     canvas.innerHTML = ''; // Clear the canvas
 
-    for (let i = 0; i < 16; i++) {
-        for (let j = 0; j < 16; j++) {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
             const pixel = document.createElement('div');
             pixel.className = 'pixel';
             pixel.style.backgroundColor = '#ffffff'; // default color white
@@ -15,6 +15,57 @@ function refreshCanvas() {
             canvas.appendChild(pixel);
         }
     }
+}
+function createCanvas() {
+    refreshCanvas()
+
+    // const textarea = document.getElementById('csv-input');
+    // const content = textarea.value;
+
+    // // const textAreaData = document.getElementById("your-textarea-id").value;
+    // const inputData = content.split("\n").map(row => row.split(","));
+
+    let textAreaData = document.getElementById("csv-input").value;
+
+    if (textAreaData !== '') {
+        // const inputData = JSON.parse(textAreaData)
+        // NOTE not sure if eval is the best choice here.
+        const inputData = eval(textAreaData)
+        const expandedData = expandImageData(inputData)
+
+        drawCanvas(expandedData)
+    }    
+}
+function populateCSV() {
+    const canvas = document.getElementById('canvas');
+    const pixels = canvas.getElementsByClassName('pixel');
+    let csvData = '';
+
+    for (let i = 0; i < pixels.length; i++) {
+        // let rgb = rgbToCSV(pixels[i].style.backgroundColor);
+        let rgb = pixels[i].style.backgroundColor;
+        // console.log(pixels[i].style.backgroundColor)
+        // csvData += rgb.join(',') + ',';
+        csvData += rgb + ',';
+
+        // Add a newline character at the end of each row of pixels
+        if ((i + 1) % 16 === 0) {
+            csvData = csvData.slice(0, -1); // Remove trailing comma
+            csvData += '\n';
+        }
+    }
+
+    // Remove the last newline character
+    csvData = csvData.slice(0, -1);
+
+    const inputData = csvData.split("\n").map(row => row.match(/rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)/g));
+
+    testData = compressImageData(inputData)
+    console.log(testData)
+    testData = JSON.stringify(testData)
+    // Populate the textarea with the CSV data
+    const csvInput = document.getElementById('csv-input');
+    csvInput.value = testData;
 }
 
 function compressImageData(inputData) {
@@ -54,27 +105,6 @@ function expandImageData(compressedData) {
     return expandedData;
 }
 
-function createCanvas() {
-    refreshCanvas()
-
-    // const textarea = document.getElementById('csv-input');
-    // const content = textarea.value;
-
-    // // const textAreaData = document.getElementById("your-textarea-id").value;
-    // const inputData = content.split("\n").map(row => row.split(","));
-
-    let textAreaData = document.getElementById("csv-input").value;
-
-    if (textAreaData !== '') {
-        // const inputData = JSON.parse(textAreaData)
-        // NOTE not sure if eval is the best choice here.
-        const inputData = eval(textAreaData)
-        const expandedData = expandImageData(inputData)
-
-        drawCanvas(expandedData)
-    }    
-}
-
 function drawCanvas(inputData) {
     const canvas = document.getElementById('canvas');
     const pixels = canvas.getElementsByClassName('pixel');
@@ -98,36 +128,4 @@ function changeColor(event) {
 function rgbToCSV(rgb) {
     // Remove "rgb(" and ")" and split on ", "
     return rgb.substring(4, rgb.length-1).replace(/ /g, '').split(',');
-}
-
-function populateCSV() {
-    const canvas = document.getElementById('canvas');
-    const pixels = canvas.getElementsByClassName('pixel');
-    let csvData = '';
-
-    for (let i = 0; i < pixels.length; i++) {
-        // let rgb = rgbToCSV(pixels[i].style.backgroundColor);
-        let rgb = pixels[i].style.backgroundColor;
-        // console.log(pixels[i].style.backgroundColor)
-        // csvData += rgb.join(',') + ',';
-        csvData += rgb + ',';
-
-        // Add a newline character at the end of each row of pixels
-        if ((i + 1) % 16 === 0) {
-            csvData = csvData.slice(0, -1); // Remove trailing comma
-            csvData += '\n';
-        }
-    }
-
-    // Remove the last newline character
-    csvData = csvData.slice(0, -1);
-
-    const inputData = csvData.split("\n").map(row => row.match(/rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)/g));
-
-    testData = compressImageData(inputData)
-    console.log(testData)
-    testData = JSON.stringify(testData)
-    // Populate the textarea with the CSV data
-    const csvInput = document.getElementById('csv-input');
-    csvInput.value = testData;
 }

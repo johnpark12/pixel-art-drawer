@@ -4,13 +4,26 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    <h1 style="text-align:center;">Pixel Art with ChatGPT</h1>
     <div id="app">
-        <h1>Pixel Art with chatGPT</h1>
-        <textarea id="csv-input" rows="10" cols="50"></textarea>
-        <button onclick="createCanvas()">Create Canvas</button>
-        <button onclick="populateCSV()">Get Pixel Data</button>
-        <input type="color" id="color-picker" value="#000000">
-        <div id="canvas"></div>
+        <div id="code-section">
+            <h2>Code your Art</h2>
+            <p>Type in your code to create your pixel art! Use our unique color-coding system to make your art come to life.</p>
+            <textarea id="csv-input" rows="10" cols="50"></textarea>
+            <label for="grid-size">Grid Size: </label>
+            <input type="number" id="grid-size" min="1" max="64" value="16">
+            <div id="button-container">
+                <button onclick="createCanvas()">Create Canvas</button>
+                <button onclick="populateCSV()">Get Pixel Data</button>
+            </div>
+        </div>
+        <div id="art-section">
+            <h2>Your Art</h2>
+            <p>Click on the grid to color each pixel.</p>
+            <input type="color" id="color-picker" value="#000000">
+            <p>You can change the colors using the color picker above.</p>
+            <div id="canvas"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
