@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    refreshCanvas();
+    createCanvas();
 });
 
 function refreshCanvas(gridSize) {
@@ -17,7 +17,10 @@ function refreshCanvas(gridSize) {
     }
 }
 function createCanvas() {
-    refreshCanvas()
+    const gridSize = document.getElementById('grid-size').value;
+    const canvas = document.getElementById('canvas');
+    canvas.style.setProperty('--grid-dimensions', gridSize); // Set the CSS variable for grid size
+    refreshCanvas(gridSize);
 
     // const textarea = document.getElementById('csv-input');
     // const content = textarea.value;
@@ -39,17 +42,15 @@ function createCanvas() {
 function populateCSV() {
     const canvas = document.getElementById('canvas');
     const pixels = canvas.getElementsByClassName('pixel');
+    const gridSize = Math.sqrt(pixels.length); // Calculate the grid size from the total pixel count
     let csvData = '';
 
     for (let i = 0; i < pixels.length; i++) {
-        // let rgb = rgbToCSV(pixels[i].style.backgroundColor);
         let rgb = pixels[i].style.backgroundColor;
-        // console.log(pixels[i].style.backgroundColor)
-        // csvData += rgb.join(',') + ',';
         csvData += rgb + ',';
 
         // Add a newline character at the end of each row of pixels
-        if ((i + 1) % 16 === 0) {
+        if ((i + 1) % gridSize === 0) {
             csvData = csvData.slice(0, -1); // Remove trailing comma
             csvData += '\n';
         }
