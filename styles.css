@@ -10,8 +10,12 @@ h1, h2 {
 }
 
 h1 {
+    font-size: 2em;  /* Decrease the size */
     text-align: center;
-    padding: 20px 0;
+    margin: 0.5em auto;  /* Decrease the margin */
+    border-radius: 0.5em;  /* Rounded corners */
+    width: fit-content;  /* Fits the width to the content */
+    align-self: center;  /* Center in the parent container */
 }
 
 #app {
@@ -20,7 +24,7 @@ h1 {
     justify-content: space-between;
     margin: 0 auto;
     max-width: 1200px;
-    padding: 20px;
+    padding: 0px;
     background-color: white;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
 }
@@ -84,11 +88,9 @@ button:hover {
 }
 
 #color-picker {
-    width: 100%;
-    max-width: 200px;
-    margin: 10px 0;
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
