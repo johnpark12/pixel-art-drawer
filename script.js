@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+    refreshCanvas();
+});
+
 function refreshCanvas() {
     const canvas = document.getElementById('canvas');
     canvas.innerHTML = ''; // Clear the canvas
